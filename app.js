@@ -18,9 +18,16 @@ app.get("/mean", function(req, res){
     }
 
     let strOfNums = req.query.nums.split(",");
+
     const nums = strOfNums.map(str => {
       return Number(str);
     });
+
+    for(let key of nums){
+      if(isNaN(key)){
+        throw new BadRequestError(`${key} must be a number`)
+      }
+    }
 
     const mean = findMean(nums);
 
@@ -40,6 +47,7 @@ app.get("/median", function(req, res){
     return res.json({operation: "median", median})
 })
 
+//TODO: make another function for encapsulation: validating nums in query string
 
 /** Finds mode of nums in qs: returns {operation: "mean", result } */
 app.get("/mode", function(req, res){
